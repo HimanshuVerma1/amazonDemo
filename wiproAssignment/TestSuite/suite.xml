@@ -1,0 +1,17 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="amazonTestSuite">
+    
+    <listeners>
+        <listener class-name ="com.main.listeners.ITestListenerImp"/>
+    </listeners>
+    
+	<parameter name="DeviceUDID" value="ZY2224T9RX" />
+	<parameter name="PlatformVersion" value="6.0.1" />
+	<test name="amazonLoginTest">
+		<classes>
+			<class name="com.testscript.amazon.AmazonLogin" />
+		</classes>
+	</test>
+</suite>
