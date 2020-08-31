@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,10 +13,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.main.test.BaseTest;
 
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.nativekey.KeyEvent;
-import io.appium.java_client.android.nativekey.PressesKey;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public class UtilityCommand {
 
 	/**
@@ -32,6 +32,7 @@ public class UtilityCommand {
 		try {
 			new WebDriverWait(BaseTest.getDriver(), waitTime)
 					.until(ExpectedConditions.visibilityOf(element));
+			completeActionWithElementFound(element.toString());
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -94,13 +95,21 @@ public class UtilityCommand {
 				.click();
 	}
 
-	public static void pressKey(KeyEvent key) {
-		PressesKey press = new PressKey();
-		press.pressKey(key);
+	private static void completeActionWithElementFound(String message) {
+		log.info("Found element {}", message);
 	}
-	public static void createTextFile(String textToWrite, String pathToSaveOutputFile) throws IOException {
-		FileWriter writer = new FileWriter(new File(pathToSaveOutputFile));
-		writer.write(textToWrite);
+
+	public static void pressKeyUsingKeyBoard(Keys key) {
+		BaseTest.getDriver().getKeyboard().sendKeys(key);
+	}
+	public static String createNewFile(File file) throws IOException {
+		file.createNewFile();
+		return file.getAbsolutePath();
+	}
+	public static void writeFile(String textToWrite, String filePathToWrite) throws IOException {
+		FileWriter writer = new FileWriter(filePathToWrite, true);
+		writer.write(textToWrite + "\\n");
 		writer.close();
 	}
+
 }

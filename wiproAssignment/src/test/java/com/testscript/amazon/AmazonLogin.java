@@ -1,5 +1,7 @@
 package com.testscript.amazon;
 
+import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -17,7 +19,7 @@ public class AmazonLogin extends BaseTest {
 	}
 
 	@Test(description = "Login to amazon mobile application and search for an item and add to cart and purchase it")
-	public void amazonLoginTest() {
+	public void amazonLoginTest() throws IOException, InterruptedException {
 		init();
 
 		if (amazonHomePage.isOnSignInPage()) {
@@ -25,9 +27,10 @@ public class AmazonLogin extends BaseTest {
 		}
 
 		Assert.assertTrue(amazonHomePage.isOnHomePage(), "Check if user is on home page of the Amazon app");
-		
-		amazonSearchPage.searchProduct("TV");
+
+		amazonSearchPage.searchProduct("65 inch TV");
 		Assert.assertTrue(amazonSearchPage.isSearchedResultPresent(), "Check if searched product showing some results");
+
 	}
 
 	private void init() {
