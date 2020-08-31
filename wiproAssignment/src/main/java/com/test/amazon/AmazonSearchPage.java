@@ -20,6 +20,12 @@ public class AmazonSearchPage extends BasePage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Results\")")
 	private MobileElement resultsText;
 
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true))."
+								+ "scrollIntoView(new UiSelector().textContains(\".00\"))")
+	private MobileElement searchedProductsResult;
+
+
+
 	public void searchProduct(String searchProductName) throws IOException, InterruptedException {
 		log.info("Search for the product {}", searchProductName);
 		UtilityCommand.clickWhenVisible(searchTextBox, 10);
@@ -30,4 +36,10 @@ public class AmazonSearchPage extends BasePage {
 	public boolean isSearchedResultPresent() {
 		return UtilityCommand.isElementVisibleInTime(resultsText, 30);
 	}
+
+	public void scrollAndSelectSearchedProduct() {
+		UtilityCommand.clickWhenVisible(searchedProductsResult, 20);
+	}
+
+
 }

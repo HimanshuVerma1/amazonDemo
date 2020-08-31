@@ -1,12 +1,7 @@
 package com.main.test;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Set;
 
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
@@ -14,7 +9,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
 import com.main.listeners.WebDriverEventLogger;
-import com.main.utility.UtilityCommand;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -31,10 +25,12 @@ public class BaseTest extends BaseTestRunner {
 
 	private String APP_PACKAGE;
 	private String APP_ACTIVITY;
+	private String APP_Path;
 
-	public BaseTest(String appPackage, String appActivity) {
+	public BaseTest(String appPackage, String appActivity, String appPath) {
 		this.APP_PACKAGE = appPackage;
 		this.APP_ACTIVITY = appActivity;
+		this.APP_Path = appPath;
 	}
 
 	@Parameters({"DeviceUDID", "PlatformVersion"})
@@ -57,11 +53,15 @@ public class BaseTest extends BaseTestRunner {
         desiredCap.setCapability(MobileCapabilityType.AUTOMATION_NAME, "uiautomator2");
         desiredCap.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "600");
 		desiredCap.setCapability(MobileCapabilityType.NO_RESET, true);
+		desiredCap.setCapability(MobileCapabilityType.FULL_RESET, false);
+		desiredCap.setCapability(MobileCapabilityType.APP, APP_Path);
+
         return desiredCap;
     }
 
 	@AfterClass(alwaysRun = true)
 	public void tearDown() {
+		log.info("Quit driver");
 		driver.quit();
     }
 
@@ -71,25 +71,4 @@ public class BaseTest extends BaseTestRunner {
     public static AppiumDriver<MobileElement> getDriver(){
         return driver;
     }
-
-	private String getLogOutputPath() {
-		return String.format(
-				System.getProperty("user.dir")+ "\\TestLogOutput\\testlog%s.txt",
-				LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-mm-yy_hh:mm:ss")));
-	}
-
-	private void generateAppiumSessionLogs() throws IOException {
-		log.info("log file path >>>> {}", getLogOutputPath());
-		String filePath = UtilityCommand.createNewFile(new File(getLogOutputPath()));
-		Set<String> logTypes = driver.manage().logs().getAvailableLogTypes();
-		for (String log : logTypes) {
-			driver.manage().logs().get(log).getAll().forEach(text -> {
-				try {
-					UtilityCommand.writeFile(text.toString(), filePath);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-		}
-	}
 }

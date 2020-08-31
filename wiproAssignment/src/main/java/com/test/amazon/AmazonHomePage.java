@@ -8,14 +8,6 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AmazonHomePage extends BasePage {
 
-	/*
-	 * Constant variable for app package and activity
-	 */
-	public static final String APP_PACKAGE = "com.amazon.mShop.android.shopping";
-	public static final String APP_ACTIVITY = "com.amazon.mShop.splashscreen.StartupActivity";
-	// public static final String APK_PATH = System.getProperty("user.dir") +
-	// "\\TestAPK\\Amazon_shopping.apk";
-
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Already a customer? Sign in\")")
 	private MobileElement signInButton;
 

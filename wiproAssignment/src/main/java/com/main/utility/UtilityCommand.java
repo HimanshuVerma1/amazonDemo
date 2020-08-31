@@ -1,12 +1,9 @@
 package com.main.utility;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -99,17 +96,22 @@ public class UtilityCommand {
 		log.info("Found element {}", message);
 	}
 
+	/**
+	 * Press any key using appium key board
+	 *
+	 * @param key
+	 */
 	public static void pressKeyUsingKeyBoard(Keys key) {
 		BaseTest.getDriver().getKeyboard().sendKeys(key);
 	}
-	public static String createNewFile(File file) throws IOException {
-		file.createNewFile();
-		return file.getAbsolutePath();
-	}
-	public static void writeFile(String textToWrite, String filePathToWrite) throws IOException {
-		FileWriter writer = new FileWriter(filePathToWrite, true);
-		writer.write(textToWrite + "\\n");
-		writer.close();
-	}
 
+	/**
+	 * Swipe on element
+	 * @param startFrom swipe start from
+	 * @param endTo swipe till element
+	 */
+	public static void swipeElement(MobileElement startFrom, MobileElement endTo) {
+		new TouchActions(BaseTest.getDriver()).clickAndHold(startFrom)
+				.moveToElement(endTo).build().perform();
+	}
 }
